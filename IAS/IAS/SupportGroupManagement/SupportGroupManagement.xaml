@@ -1,0 +1,62 @@
+﻿<PageFunction
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+    xmlns:local="clr-namespace:IAS"    
+    x:Class="IAS.SupportGroupManagement"
+    x:TypeArguments="local:ContactCollection"
+    Title="SupportGroupManagement"
+    Background="Green"
+    Loaded="PageFunction_Loaded">
+    <Page.Resources>
+        
+    </Page.Resources>
+  <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="AUTO"/>
+        </Grid.RowDefinitions>
+        <DockPanel >
+
+            <local:ContactAddDelete x:Name="contactControl" 
+                                              selectionChanged="contactControl_selectionChanged"
+                                              addClicked="contactControl_addClicked"
+                                              deleteClicked="contactControl_deleteClicked"
+                                    Header="CONTACTS" DockPanel.Dock="Left">
+
+
+            </local:ContactAddDelete>
+
+            <GroupBox Name ="ContactDetails" BorderBrush="White" BorderThickness="2"  Margin="50,0,0,0" Visibility="Hidden" >
+                <GroupBox.Header>
+
+                    <Label Content="CONTACT DETAILS" Foreground="White" FontSize="12"/>
+                </GroupBox.Header>
+
+                <DockPanel >
+
+                    <Button DockPanel.Dock="Bottom" Name="btnSave" Content="SAVE" Margin="5" Width="Auto" Height="Auto" 
+                        HorizontalAlignment="Right" 
+                    FontSize="20"  Click="btnSave_Click"/>
+
+                    <local:ContactDetails x:Name="contactDetailsControl" Margin="10,0,0,0"
+                                          >
+
+                    </local:ContactDetails>
+
+
+
+
+                </DockPanel>
+
+            </GroupBox>
+        </DockPanel>
+
+
+        <Button Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="DONE" Margin="5"
+              FontSize="20" Click="Button_Click" />
+
+
+        
+  </Grid>
+</PageFunction>

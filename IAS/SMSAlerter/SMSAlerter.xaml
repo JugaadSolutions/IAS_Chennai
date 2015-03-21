@@ -1,0 +1,12 @@
+﻿<Window x:Class="gsm.sms.SMSAlerter"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="SMS Alerter" Height="300" Width="300" Closing="Window_Closing">
+    <Grid>
+        <Grid Background="BurlyWood">
+            <TextBox Margin="10,68,8,51" Name="tbMsg" IsEnabled="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility ="Visible" />
+        </Grid>
+
+
+    </Grid>
+</Window>

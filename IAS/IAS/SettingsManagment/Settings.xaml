@@ -1,0 +1,130 @@
+﻿<PageFunction
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+    xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit"
+    xmlns:local="clr-namespace:IAS"
+    x:Class="IAS.Settings"
+    x:TypeArguments="local:settings"
+    Title="Settings"
+    Background="Green"
+    >
+    <Page.Resources>
+        <Style TargetType="Label">
+            
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="20"/>
+
+
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="20"/>
+
+
+        </Style>
+    </Page.Resources>
+  <Grid Name="settingsGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <GroupBox  DockPanel.Dock="Top">
+            <GroupBox.Header>
+                <Label Content="Marquee" Foreground="White" FontSize="12"/>
+            </GroupBox.Header>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content=" Message Marquee:"  />
+                    <TextBox Name="tbMarquee" MinWidth="500" Text="{Binding Path=Marquee,Mode=TwoWay}"/>
+                </StackPanel >
+                <StackPanel Margin="5" Orientation="Horizontal">
+                <Label Content="Message Marquee Speed:"  />
+                <TextBox Name="tbMarqueeSpeed" MinWidth="50" Text="{Binding Path=MarqueeSpeed,Mode=TwoWay}"/>
+                </StackPanel>
+                <StackPanel Margin="5" Orientation="Horizontal" Visibility="Visible">
+                    <Label Content="Issue Marquee Speed:"/>
+                    <TextBox Name="tbIssueMarqueeSpeed" MinWidth="50" Text="{Binding Path=IssuemarqueeSpeed,Mode=TwoWay}"/>
+                   
+                </StackPanel>
+                
+            </StackPanel>
+
+        </GroupBox>
+        <GroupBox Grid.Row="1">
+            <GroupBox.Header>
+                <Label Content="Escalation Settings" Foreground="White" FontSize="12"/>
+            </GroupBox.Header>
+        <Grid  Margin="5" Visibility="Visible" Height="Auto">
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <dg:DataGrid  AutoGenerateColumns="False"  Name="escalationDurationTable" 
+                                 ItemsSource="{Binding }" HorizontalAlignment="Left" 
+                                 SelectionMode="Single" SelectionUnit="FullRow"  
+                                    Background="Green" BorderThickness="0"
+                        CanUserAddRows="False" CanUserReorderColumns="False" CanUserSortColumns="False" 
+                         >
+                <dg:DataGrid.Resources>
+                    <Style x:Name="Header_Style1" TargetType="{x:Type dg:DataGridColumnHeader}" >
+                        <Setter Property="FontSize" Value="15"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="BorderThickness" Value="0" />
+                        
+                    </Style>
+                </dg:DataGrid.Resources>
+                <dg:DataGrid.Columns>
+                    <dg:DataGridTemplateColumn Header="Escalation"  IsReadOnly="True"  CanUserReorder="False"  >
+                        <dg:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock  Text="{Binding Name  }" FontSize="15"  />
+                            </DataTemplate>
+                        </dg:DataGridTemplateColumn.CellTemplate>
+                    </dg:DataGridTemplateColumn>
+                    <dg:DataGridTemplateColumn Header="Duration(in Minutes)"   >
+                        <dg:DataGridTemplateColumn.CellTemplate  >
+                            <DataTemplate >
+                                <TextBox MaxLines="1" MaxLength="8" 
+                                                     Text="{Binding Duration , Mode=TwoWay}" 
+                                                     FontSize="20"/>
+                            </DataTemplate>
+                        </dg:DataGridTemplateColumn.CellTemplate>
+                    </dg:DataGridTemplateColumn>
+                </dg:DataGrid.Columns>
+            </dg:DataGrid>
+
+        </Grid>
+            </GroupBox>
+        <GroupBox Grid.Row="2"  Height="Auto">
+            <GroupBox.Header>
+                <Label Content="Password" Foreground="White" FontSize="12"/>
+            </GroupBox.Header>
+              <StackPanel Orientation="Horizontal" Margin="5" Height="Auto">
+                    <Label Content=" Current Password:"  />
+                    <PasswordBox Name="tbOldPassword" MinWidth="100" PasswordChar="*" 
+                                 VerticalAlignment="Top" MaxLength="4" FontSize="20" Height="Auto" 
+                                 PasswordChanged="tbOldPassword_PasswordChanged"/>
+                    <Label Content="New Password:" Margin="5,0,0,0" />
+                    <PasswordBox Name="tbnewPassword" MinWidth="100" PasswordChar="*" 
+                                 VerticalAlignment="Top" MaxLength="4" FontSize="20" Width="Auto"
+                                  IsEnabled="False" LostFocus="tbnewPassword_LostFocus"/>
+
+
+                </StackPanel>
+
+
+                
+                
+
+
+        </GroupBox>
+        <Button Grid.Row="3" Name="btnDone" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                Content="DONE" FontSize="20" Margin="5" Click="btnDone_Click"/>
+
+
+    </Grid>
+</PageFunction>

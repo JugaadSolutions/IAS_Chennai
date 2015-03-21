@@ -1,0 +1,169 @@
+﻿<UserControl x:Class="IAS.ContactDetails"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit"
+    xmlns:local="clr-namespace:IAS"
+    Height="Auto" Width="Auto"
+    >
+    <UserControl.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="MinWidth" Value="300"/>
+            <Setter Property="FontSize" Value="20"/>
+            
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="20"/>
+
+
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="30"/>
+        </Style>
+
+               
+            
+    </UserControl.Resources>
+    <Grid Background="Green">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+
+        </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Name="DeviceIdGrid"  Margin="5,5" Height="Auto">
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0"  Content=" CONTACT NAME:" HorizontalContentAlignment="Left"   />
+                <TextBox Grid.Column="1" Name="tbContactName"   Text="{Binding Path=Name}"
+                              IsReadOnly="False" 
+                              />
+            </Grid>
+            <Grid Grid.Row="1" Margin="5,5" Height="Auto">
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0"  Content=" CONTACT NUMBER:" HorizontalContentAlignment="Left"  />
+                <TextBox Grid.Column="1" Name="tbContactNumber"  Text="{Binding Path=Number}"
+                              IsReadOnly="False" 
+                              />
+            </Grid>
+        <Grid Grid.Row="2" Margin="5,5" Height="Auto">
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <CheckBox Name="LineSummaryCheckBox" VerticalAlignment="Center" IsChecked="{Binding Path=LineSummary,Mode=TwoWay}"/>
+            <Label Grid.Column="1"  Content=" Hourly Summary " HorizontalContentAlignment="Left"  />
+            <CheckBox Grid.Column="2" Name="ShiftSummaryCheckBox" VerticalAlignment="Center" IsChecked="{Binding Path=ShiftSummary,Mode=TwoWay}"/>
+            <Label Grid.Column="3"  Content=" Shift Summary " HorizontalContentAlignment="Left"  />
+        </Grid>
+        <UniformGrid Columns="4" Grid.Row="3">
+            <GroupBox Name="lineGroupBox" Margin="15,0,0,0"
+                      >
+                    <GroupBox.Header>
+                        <Label Content="LINE ASSOCIATION" Foreground="White" FontSize="12"/>
+                    </GroupBox.Header>
+                        <dg:DataGrid Name="dgLine" ItemsSource="{Binding Path=LineAssociation}" HorizontalAlignment="Left" 
+                             Background="Green" BorderThickness="0"
+                                 AutoGenerateColumns="False"
+                                 HeadersVisibility="All"  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                                 HorizontalContentAlignment="Center"
+                             CanUserAddRows="False"
+                             CanUserSortColumns="False"
+                             CanUserDeleteRows="False"
+                             CanUserReorderColumns="False"
+                             >
+                    <dg:DataGrid.Columns>
+                            <dg:DataGridCheckBoxColumn Binding="{Binding Path = IsAssociated , Mode=TwoWay}"  />
+
+                            <dg:DataGridTextColumn Binding="{Binding Path=Name}" Header="LINE" Foreground="Black"  FontSize="15"/>
+
+                    </dg:DataGrid.Columns>
+                </dg:DataGrid>
+
+            </GroupBox>
+
+                <GroupBox Name="shiftGroupBox" Margin="15,0,0,0">
+                    <GroupBox.Header>
+                        <Label Content="SHIFT ASSOCIATION" Foreground="White" FontSize="12"/>
+                    </GroupBox.Header>
+                    <dg:DataGrid Name="dgShift" ItemsSource="{Binding Path=ShiftAssociation}" HorizontalAlignment="Left" 
+                             Background="Green" BorderThickness="0"
+                                 AutoGenerateColumns="False"
+                                 HeadersVisibility="Column" 
+                                 HorizontalContentAlignment="Center"
+                                 CanUserAddRows="False"
+                                 CanUserSortColumns="False"
+                                 CanUserDeleteRows="False"
+                                 CanUserReorderColumns="False">
+                        <dg:DataGrid.Columns>
+                            <dg:DataGridCheckBoxColumn Binding ="{Binding Path = IsAssociated , Mode=TwoWay}"  />
+
+                            <dg:DataGridTextColumn Binding="{Binding Path=Name}" Header="SHIFT" Foreground="Black" FontSize="15"/>
+
+                    </dg:DataGrid.Columns>
+                    </dg:DataGrid>
+
+                </GroupBox>
+
+                <GroupBox Name="departmentGroupBox" Margin="15,0,0,0" >
+                    <GroupBox.Header>
+                        <Label Content="DEPARTMENT ASSOCIATION" Foreground="White" FontSize="12"/>
+                    </GroupBox.Header>
+                    <dg:DataGrid Name="dgDepartment" ItemsSource="{Binding Path=DepartmentAssociation}" HorizontalAlignment="Left" 
+                             Background="Green" BorderThickness="0"
+                                 AutoGenerateColumns="False"
+                                 HeadersVisibility="Column"  
+                                 HorizontalContentAlignment="Center"
+                                 CanUserAddRows="False"
+                                 CanUserSortColumns="False"
+                                 CanUserDeleteRows="False"
+                                 CanUserReorderColumns="False">
+                        <dg:DataGrid.Columns>
+                            <dg:DataGridCheckBoxColumn Binding="{Binding Path = IsAssociated , Mode=TwoWay}"  />
+
+                            <dg:DataGridTextColumn Binding="{Binding Path=Name}" Header="DEPARTMENT" Foreground="Black" FontSize="15"/>
+
+                    </dg:DataGrid.Columns>
+                    </dg:DataGrid>
+
+                </GroupBox>
+
+                <GroupBox Name="escalationGroupBox" Margin="15,0,0,0">
+                    <GroupBox.Header>
+                        <Label Content="ESCALATION ASSOCIATION" Foreground="White" FontSize="12"/>
+                    </GroupBox.Header>
+                    <dg:DataGrid Name="dgEscalation" ItemsSource="{Binding Path=EscalationAssociation}" HorizontalAlignment="Left" 
+                             Background="Green" BorderThickness="0"
+                                 AutoGenerateColumns="False"
+                                 HeadersVisibility="Column" 
+                                 HorizontalContentAlignment="Center"
+                                 CanUserAddRows="False"
+                                 CanUserSortColumns="False"
+                                 CanUserDeleteRows="False"
+                                 CanUserReorderColumns="False">
+                        <dg:DataGrid.Columns>
+                            <dg:DataGridCheckBoxColumn    Binding="{Binding Path = IsAssociated , Mode=TwoWay}"  />
+
+                            <dg:DataGridTextColumn  Binding="{Binding Path=Name}" Header="ESCALATION" Foreground="Black" FontSize="15"/>
+
+                    </dg:DataGrid.Columns>
+                    </dg:DataGrid>
+
+                </GroupBox>
+            </UniformGrid>
+
+
+ 
+    </Grid>
+</UserControl>

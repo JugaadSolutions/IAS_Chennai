@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style TargetType="Hyperlink">
+        <Setter Property="FontFamily" Value="Monotype Corsiva"/>
+        <Setter Property="FontStyle" Value="italic"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="Green"/>
+
+    </Style>
+    <Style TargetType="Page">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="Green"/>
+
+    </Style>
+
+</ResourceDictionary>

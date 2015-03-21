@@ -1,0 +1,59 @@
+﻿<PageFunction
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+    xmlns:local="clr-namespace:IAS"
+    x:Class="IAS.LineInfo"
+    
+    x:TypeArguments="local:lineInfo"
+    Title="LineInfo" Height="Auto" Width="Auto">
+    <Page.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="MinWidth" Value="300"/>
+            <Setter Property="FontSize" Value="20"/>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="20"/>
+            
+            
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="30"/>
+        </Style>
+        
+    </Page.Resources>
+    <StackPanel Background="Green">
+   
+    <Grid Name="IdGrid"  Margin="5,20" Height="Auto">
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0"  Content=" LINE ID:" HorizontalContentAlignment="Left"   />
+            <TextBox Grid.Column="1" Name="tbLineID"  Text="{Binding Path=ID,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                              IsReadOnly="False" 
+                              />
+        </Grid>
+        <Grid Name="NameGrid" Margin="5,20" Height="Auto">
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"  Content=" LINE NAME:" HorizontalContentAlignment="Left"  />
+            <TextBox Grid.Column="1" Name="tbLineName"  Text="{Binding Path = Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              IsReadOnly="False" 
+                              />
+        </Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Name="btnSave" Content="Save" Margin="5" Click="btnSave_Click"/>
+            <Button Name="btnCancel" Content="Cancel" Margin="5" Click="btnCancel_Click"/>
+            
+        </StackPanel>
+        
+    </StackPanel>
+    
+</PageFunction>

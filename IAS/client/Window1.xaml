@@ -1,0 +1,254 @@
+﻿<Window x:Class="ias.client.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"   
+    xmlns:local="clr-namespace:ias.shared;assembly=ias.shared"
+    Title="Intelligent Andon System " WindowState="Maximized" WindowStartupLocation="CenterScreen"  
+         ResizeMode="CanMinimize">
+    <Window.Resources>
+        <local:statusToBackgroundConv x:Key="statusConverter"></local:statusToBackgroundConv>
+    </Window.Resources>
+    <TabControl Name="TBLine" Background="Green">
+        <TabItem Background="Green" Visibility="Visible">
+            <TabItem.Header>
+                <TextBlock Text="Line Configuration" FontSize="12" HorizontalAlignment="Stretch" />
+            </TabItem.Header>
+            <StackPanel Background="Green">
+                <Grid Name="DeviceIdGrid"  Margin="5,20" Height="Auto">
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"  Content=" ProductionLine:" 
+                           Foreground ="White"  HorizontalContentAlignment="Left" FontSize="20" />
+                    <ComboBox Grid.Column="1" Name="cmbProductionLineSelector"  SelectedIndex="-1" Text="Select Production Line" 
+                              IsEditable="True" IsReadOnly="True" ItemsSource="{Binding}" DisplayMemberPath="description"
+                              SelectionChanged="cmbProductionLineSelector_SelectionChanged"  FontSize="20"/>
+                </Grid>
+
+                <Grid Name="ShiftGrid"  Margin="5,10" Height="Auto">
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"  Content=" Shift:" 
+                           Foreground ="White" HorizontalContentAlignment="Left" FontSize="20" />
+                    <ComboBox Grid.Column="1" Name="cmbShiftSelector"  SelectedIndex="-1"  
+                              IsEditable="False" IsReadOnly="True" ItemsSource="{Binding}" DisplayMemberPath="Name"
+                              SelectionChanged="cmbShiftSelector_SelectionChanged"  FontSize="20" IsEnabled="False"/>
+                    <Label Grid.Column="2"  Content=" NP:" 
+                           Foreground ="White" HorizontalContentAlignment="Left" FontSize="20" />
+                    <CheckBox Grid.Column="3" Name="NPcheckBox" VerticalAlignment="Center" Checked="NPcheckBox_Checked" Unchecked="NPcheckBox_Unchecked"/>
+                </Grid>
+
+                <Grid Margin="5,10" Visibility="Visible" Height="Auto">
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        
+                    </Grid.ColumnDefinitions>
+                    <dg:DataGrid Margin="10,0,0,0" AutoGenerateColumns="False"  Name="shiftConfigTable" Grid.Column="0"
+                                 ItemsSource="{Binding}" HorizontalAlignment="Left" 
+                                 SelectionMode="Single" SelectionUnit="Cell"  >
+                        <dg:DataGrid.Resources>
+                            <Style x:Name="Header_Style1" TargetType="{x:Type dg:DataGridColumnHeader}" >
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Style>
+                        </dg:DataGrid.Resources>
+                        <dg:DataGrid.Columns>
+                            <dg:DataGridTemplateColumn Header="Session"  IsReadOnly="True"  CanUserReorder="False"  >
+                                <dg:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock  Text="{Binding Shift}" FontSize="15" />
+                                    </DataTemplate>
+                                </dg:DataGridTemplateColumn.CellTemplate>
+                            </dg:DataGridTemplateColumn>
+                            <dg:DataGridTemplateColumn Header="Target Qty"   >
+                                <dg:DataGridTemplateColumn.CellTemplate  >
+                                    <DataTemplate >
+                                        <TextBox MaxLines="1" MaxLength="8" 
+                                                     Text="{Binding PlannedQuantity}" 
+                                                     FontSize="20"/>
+                                    </DataTemplate>
+                                </dg:DataGridTemplateColumn.CellTemplate>
+                            </dg:DataGridTemplateColumn>
+                        </dg:DataGrid.Columns>
+                    </dg:DataGrid>
+                    <Button  Grid.Column="2" Name="btnSet" Margin="5" VerticalAlignment="Bottom" 
+                                 MinWidth="50" HorizontalAlignment="Center" Content="Set" 
+                                 Click="btnSet_Click" Height="Auto" FontSize="20" />
+                </Grid>
+
+            </StackPanel>
+
+        </TabItem>
+        <TabItem Name="LineMonitor" Visibility="Visible" Background="Green">
+            <TabItem.Header>
+                <TextBlock Text="Line Monitor" FontSize="12"/>
+            </TabItem.Header>
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Background="Green" >
+                    <Viewbox VerticalAlignment="Top">
+                        <dg:DataGrid  Margin="5" Name="LineStatsGrid"  AutoGenerateColumns="False" CanUserReorderColumns="False" 
+                                 CanUserSortColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" 
+                                 CanUserResizeColumns="False" VerticalAlignment="Top" HorizontalAlignment="Center"
+                                 ItemsSource="{Binding}" IsReadOnly="True">
+                            <dg:DataGrid.Resources>
+                                <Style x:Name="H1" TargetType="{x:Type dg:DataGridColumnHeader}">
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Width" Value="Auto"/>
+                                </Style>
+
+
+
+
+
+                            </dg:DataGrid.Resources>
+                            <dg:DataGrid.Columns>
+                                <dg:DataGridTemplateColumn Header="Production Line"  IsReadOnly="True"  CanUserReorder="False"  >
+                                    <dg:DataGridTemplateColumn.CellTemplate >
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding LineDescription}" FontSize="25" FontWeight="500"
+                                                            BorderThickness="0"/>
+                                        </DataTemplate>
+                                    </dg:DataGridTemplateColumn.CellTemplate>
+                                </dg:DataGridTemplateColumn>
+                                <dg:DataGridTemplateColumn Header="Target Qty"  IsReadOnly="True" Visibility="Hidden"  >
+                                    <dg:DataGridTemplateColumn.CellTemplate  >
+                                        <DataTemplate >
+                                            <TextBox MaxLines="1"  Text="{Binding TargetQuantity}" FontSize="35" 
+                                                         HorizontalAlignment="Center" MinWidth="80" 
+                                                         BorderThickness="0" HorizontalContentAlignment="Right"/>
+                                        </DataTemplate>
+                                    </dg:DataGridTemplateColumn.CellTemplate>
+                                </dg:DataGridTemplateColumn>
+                                <dg:DataGridTemplateColumn  Header="Actual Qty"  IsReadOnly="True" Visibility="Hidden" >
+                                    <dg:DataGridTemplateColumn.CellTemplate  >
+                                        <DataTemplate >
+                                            <TextBox MaxLines="1" Text="{Binding ActualQuantity}" FontSize="35" MinWidth="80"
+                                                          HorizontalAlignment="Center" BorderThickness="0"
+                                                         HorizontalContentAlignment="Right"/>
+                                        </DataTemplate>
+                                    </dg:DataGridTemplateColumn.CellTemplate>
+                                </dg:DataGridTemplateColumn>
+                                <dg:DataGridTemplateColumn  Header="BreakDown"  IsReadOnly="True"  Visibility="Visible">
+                                    <dg:DataGridTemplateColumn.CellTemplate  >
+                                        <DataTemplate >
+                                            <TextBox MaxLines="1" MaxLength="6" MinWidth="100" Background="{Binding Path=BreakdownBrush}" 
+                                                         FontSize="15" HorizontalAlignment="Center" BorderThickness="0"/>
+                                        </DataTemplate>
+                                    </dg:DataGridTemplateColumn.CellTemplate>
+                                </dg:DataGridTemplateColumn>
+                                <dg:DataGridTemplateColumn Header="Quality"  IsReadOnly="True" Visibility="Visible" >
+                                    <dg:DataGridTemplateColumn.CellTemplate  >
+                                        <DataTemplate >
+                                            <TextBox MaxLines="1" MaxLength="6" MinWidth="100" 
+                                                         Background="{ Binding Path=QualityBrush}" 
+                                                         FontSize="15"  BorderThickness="0"/>
+                                        </DataTemplate>
+                                    </dg:DataGridTemplateColumn.CellTemplate>
+                                </dg:DataGridTemplateColumn>
+                                <dg:DataGridTemplateColumn  Header="Material Shortage"  IsReadOnly="True" >
+                                    <dg:DataGridTemplateColumn.CellTemplate  >
+                                        <DataTemplate >
+                                            <TextBox MaxLines="1" MaxLength="4" MinWidth="100"    Background="{ Binding Path=MaterialShortageBrush}" 
+                                                         FontSize="15"  BorderThickness="0"/>
+                                        </DataTemplate>
+                                    </dg:DataGridTemplateColumn.CellTemplate>
+                                </dg:DataGridTemplateColumn>
+                            </dg:DataGrid.Columns>
+
+                        </dg:DataGrid>
+                    </Viewbox>
+
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Canvas Margin="5" Name="cIssueMarquee" ClipToBounds="True" Height="70" Width="500" Background="Green" >
+                        <TextBox x:Name="tbIssueMarquee" FontSize="50" Margin="5" 
+                                 BorderThickness="0" 
+                                 Background="Green"  Foreground="White">
+
+                        </TextBox>
+                    </Canvas>
+
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Canvas Margin="5" Name="cMarquee" ClipToBounds="True" Height="70" Width="500" Background="Green" >
+                        <TextBox x:Name="tbMarquee" FontSize="50" Margin="5" 
+                                  BorderThickness="0" 
+                                 Background="Green"  Foreground="White">
+
+                        </TextBox>
+                    </Canvas>
+                </Grid>
+            </Grid>
+
+
+        </TabItem>
+        <TabItem Name="tabReports" Header="Reports"  FontSize="15" Background="Green">
+            <DockPanel>
+                <GroupBox Header="Report Configuration" DockPanel.Dock="Top">
+                    <StackPanel>
+                        <StackPanel Margin="2" Orientation="Horizontal" Visibility="Visible">
+                            <Label Content="Report Selection :"/>
+                            <ComboBox Name="cmbReportSelector" HorizontalAlignment="Left" SelectedIndex="0">
+                                <ComboBoxItem>Downtime</ComboBoxItem>
+                                <ComboBoxItem>Hourly Availability</ComboBoxItem>
+                                
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <Label Content="From:" HorizontalAlignment="Left" FontSize="12"  Width="Auto" />
+                            <dg:DatePicker Name="dpFrom" FontSize="12" Height="Auto" VerticalAlignment="Top"
+                                               HorizontalAlignment="Left" Width="Auto" />
+                            <Label Content="To:" HorizontalAlignment="Left" FontSize="12" Width="Auto" />
+                            <dg:DatePicker Name="dpTo" FontSize="12" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Left"  />
+                            <Button Name="btnGenerate"  Margin="5,0,0,0" Content="Generate" Click="btnGenerate_Click"/>
+                            <Button Margin="5,0,0,0"  Name="btnExport" Content="Export" Click="btnExport_Click" 
+                                    HorizontalAlignment="Right"
+                                        VerticalAlignment="Top" Height="Auto" 
+                                        Width="Auto"/>
+
+                        </StackPanel>
+                        
+                    </StackPanel>
+
+                </GroupBox>
+                <GroupBox Header="Report"  Height="Auto" Width="Auto" DockPanel.Dock="Bottom" >
+
+
+                    <dg:DataGrid Name="dgReportGrid" AutoGenerateColumns="True" IsReadOnly="True"
+                                             CanUserAddRows="False" CanUserDeleteRows="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                                             ItemsSource="{Binding}" HorizontalAlignment="Left" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                         ScrollViewer.VerticalScrollBarVisibility="Auto" Height="Auto" Width="Auto" Visibility="Collapsed">
+                    </dg:DataGrid>
+
+
+                </GroupBox>
+
+            </DockPanel>
+        </TabItem>
+
+
+
+
+    </TabControl>
+    <!--<Grid Background="Green">
+       
+    </Grid>-->
+</Window>

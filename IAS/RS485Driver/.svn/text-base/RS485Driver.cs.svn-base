@@ -1,0 +1,112 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace mei.devicedriver
+{
+    public class RS485Driver
+    {
+
+ 
+        Byte stx = 0xAA;
+        Byte etx = 0xBB;
+
+        public RS485Driver()
+        {
+        }
+            
+
+        public List<Byte> Packetize(Byte deviceId, Byte cmd, List<Byte> data)
+        {
+            List<Byte> rs485Packet = null;
+            List<Byte> packetData = null;
+
+            
+            Byte packetLength = 0x01;
+
+            rs485Packet = new List<byte>();
+
+            packetData = new List<byte>();
+
+            packetData.Add(deviceId);     //add device id 
+            if (data != null)
+            {
+                packetLength += Convert.ToByte(data.Count);
+            }
+            packetData.Add(packetLength);
+            packetData.Add(Convert.ToByte(cmd));
+
+            if (data != null)
+            {
+                packetData.AddRange(data);
+            }
+
+            Byte checksum = computeChecksum(packetData);
+            
+            rs485Packet.Add(stx);                   //add start header
+            rs485Packet.AddRange(packetData);       //add the data
+            rs485Packet.Add(checksum);              //add checksum
+            rs485Packet.Add(etx);                   //add end trailer
+
+            return rs485Packet;
+        }
+
+        public bool Parse(List<Byte> packet, out Byte status, out Byte deviceId, out List<Byte> packetData)
+        {
+            bool result = true;
+
+            Byte dataLength = 0x00;
+            packetData = null;
+            status = 0xFF;
+            deviceId = 0xFF;
+
+            if (packet == null)
+                return false;
+
+            if ((packet[0] != stx) || (packet[packet.Count - 1] != etx))   //check header and trailer
+            {
+                return false;
+            }
+
+            packet.RemoveAt(0);                     //remove header
+            packet.RemoveAt(packet.Count - 1);      //remove trailer
+
+
+            Byte receivedChecksum = packet[packet.Count - 1];   //get the received checksum
+            packet.RemoveAt(packet.Count - 1);                  //remove the checksum
+
+            if (computeChecksum(packet) != receivedChecksum)   //checksum validation
+            {
+                return false;
+                
+                
+            }
+            deviceId = packet[0];
+            dataLength = packet[1];
+            status = packet[2];
+            packet.RemoveRange(0, 3);
+
+            if (packet.Count > 0)
+            {
+                packetData = packet;
+            }
+                       
+            return result;
+        }
+
+        private static Byte computeChecksum(List<Byte> data)
+        {
+            Byte checkSum = 0x00;
+            foreach (Byte b in data)
+            {
+                checkSum ^= b;
+            }
+            return checkSum;
+        }
+
+
+    }
+
+     
+}
